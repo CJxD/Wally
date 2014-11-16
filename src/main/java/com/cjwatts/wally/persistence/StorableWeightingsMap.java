@@ -7,8 +7,8 @@ import java.util.Map.Entry;
 public class StorableWeightingsMap {
     public HashSet<StorableWeighting> weighting = new HashSet<>();
     
-    public StorableWeightingsMap(Map<String, Float> map) {
-        for( Entry<String, Float> e : map.entrySet() )
+    public StorableWeightingsMap(Map<Integer, Float> map) {
+        for( Entry<Integer, Float> e : map.entrySet() )
             weighting.add(new StorableWeighting(e));
     }
     

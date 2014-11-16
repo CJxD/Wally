@@ -6,14 +6,14 @@ import javax.xml.bind.annotation.XmlAttribute;
 
 public class StorableWeighting {
     @XmlAttribute
-    public String name;
+    public Integer name;
 
     @XmlAttribute
     public Float value;
 
     public StorableWeighting() {}
     
-    public StorableWeighting(Entry<String, Float> e) {
+    public StorableWeighting(Entry<Integer, Float> e) {
        name = e.getKey();
        value = e.getValue();
     }

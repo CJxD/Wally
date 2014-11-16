@@ -1,20 +1,19 @@
 package com.cjwatts.wally.training;
 
-import java.util.Set;
+import org.openimaj.feature.DoubleFV;
 
 import com.cjwatts.wally.analysis.Category;
-import com.cjwatts.wally.analysis.Measurement;
 
 public final class TrainingPair {
-	private final Set<Measurement> measurements;
+	private final DoubleFV measurements;
 	private final Category category;
 	
-	public TrainingPair(Set<Measurement> measurements, Category category) {
+	public TrainingPair(DoubleFV measurements, Category category) {
 		this.measurements = measurements;
 		this.category = category;
 	}
 	
-	public Set<Measurement> getMeasurements() {
+	public DoubleFV getMeasurements() {
 		return measurements;
 	}
 

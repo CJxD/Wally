@@ -1,24 +1,24 @@
 package com.cjwatts.wally.training;
 
 import java.util.HashMap;
-import java.util.Set;
+
+import org.openimaj.feature.DoubleFV;
 
 import com.cjwatts.wally.analysis.Category;
-import com.cjwatts.wally.analysis.Measurement;
 import com.cjwatts.wally.persistence.HeuristicPersistenceHandler;
 
 public abstract class Heuristic implements Trainable {
 
 	protected final HeuristicPersistenceHandler h = new HeuristicPersistenceHandler(this);
 	private float learningRate;
-	private HashMap<String, Float> weightings = new HashMap<>();
+	private HashMap<Integer, Float> weightings = new HashMap<>();
 	
-	public Category estimate(Set<Measurement> measurements) {
+	public Category estimate(DoubleFV measurements) {
 		// TODO: Make work
 		float accumulator = 0.0f;
 		
-		for (Measurement m : measurements) {
-			accumulator += getWeighting(m.getName()) * m.getValue();
+		for (int i = 0; i < measurements.length(); i++) {
+			accumulator += getWeighting(i) * measurements.values[i];
 		}
 		
 		return Category.values()[(int) accumulator];
@@ -27,13 +27,13 @@ public abstract class Heuristic implements Trainable {
 	@Override
 	public void train(TrainingData data) {
 		for (TrainingPair p : data) {
-			for (Measurement m : p.getMeasurements()) {
+			for (int i = 0; i < p.getMeasurements().length(); i++) {
 				// TODO: Make work
-				float newWeighting = getWeighting(m.getName())
+				float newWeighting = getWeighting(i)
 						+ getLearningRate()
 						* p.getCategory().ordinal();
 				
-				setWeighting(m.getName(), newWeighting, false);
+				setWeighting(i, newWeighting, false);
 			}
 		}
 		
@@ -53,20 +53,20 @@ public abstract class Heuristic implements Trainable {
 		if (autosave) h.save();
 	}
 
-	public HashMap<String, Float> getWeightings() {
+	public HashMap<Integer, Float> getWeightings() {
 		return weightings;
 	}
 	
-	public float getWeighting(String name) {
-		return weightings.get(name);
+	public float getWeighting(Integer component) {
+		return weightings.get(component);
 	}
 
-	public void setWeighting(String name, float value) {
-		setWeighting(name, value, true);
+	public void setWeighting(Integer component, float value) {
+		setWeighting(component, value, true);
 	}
 	
-	public void setWeighting(String name, float value, boolean autosave) {
-		weightings.put(name, value);
+	public void setWeighting(Integer component, float value, boolean autosave) {
+		weightings.put(component, value);
 		if (autosave) h.save();
 	}
 	

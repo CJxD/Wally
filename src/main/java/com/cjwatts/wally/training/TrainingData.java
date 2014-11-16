@@ -6,17 +6,19 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
+import org.openimaj.feature.DoubleFV;
+
 import com.cjwatts.wally.analysis.Category;
 import com.cjwatts.wally.analysis.Measurement;
 
 public class TrainingData implements Iterable<TrainingPair> {
-	private Map<Set<Measurement>, Category> data = new TreeMap<>();
+	private Map<DoubleFV, Category> data = new TreeMap<>();
 	
-	public Category getCategory(Set<Measurement> measurements) {
+	public Category getCategory(DoubleFV measurements) {
 		return data.get(measurements);
 	}
 	
-	public void setTrainingPair(Set<Measurement> measurements, Category category) {
+	public void setTrainingPair(DoubleFV measurements, Category category) {
 		data.put(measurements, category);
 	}
 	
@@ -34,7 +36,7 @@ public class TrainingData implements Iterable<TrainingPair> {
 
 	@Override
 	public Iterator<TrainingPair> iterator() {
-		final Iterator<Entry<Set<Measurement>, Category>> dataIt = data.entrySet().iterator();
+		final Iterator<Entry<DoubleFV, Category>> dataIt = data.entrySet().iterator();
 		
 		return new Iterator<TrainingPair>() {
 
@@ -45,7 +47,7 @@ public class TrainingData implements Iterable<TrainingPair> {
 
 			@Override
 			public TrainingPair next() {
-				Entry<Set<Measurement>, Category> next = dataIt.next();
+				Entry<DoubleFV, Category> next = dataIt.next();
 				return new TrainingPair(next.getKey(), next.getValue());
 			}
 
