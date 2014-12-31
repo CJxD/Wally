@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<subject id="107">
+  <features>
+    <feature name="age">
+      <category>4</category>
+    </feature>
+    <feature name="armlength">
+      <category>4</category>
+    </feature>
+    <feature name="armthickness">
+      <category>4</category>
+    </feature>
+    <feature name="chest">
+      <category>3</category>
+    </feature>
+    <feature name="ethnicity">
+      <category>2</category>
+    </feature>
+    <feature name="facialhaircolour">
+      <category>1</category>
+    </feature>
+    <feature name="facialhairlength">
+      <category>1</category>
+    </feature>
+    <feature name="figure">
+      <category>4</category>
+    </feature>
+    <feature name="haircolour">
+      <category>5</category>
+    </feature>
+    <feature name="hairlength">
+      <category>3</category>
+    </feature>
+    <feature name="height">
+      <category>3</category>
+    </feature>
+    <feature name="hips">
+      <category>4</category>
+    </feature>
+    <feature name="leglength">
+      <category>2</category>
+    </feature>
+    <feature name="legshape">
+      <category>3</category>
+    </feature>
+    <feature name="legthickness">
+      <category>4</category>
+    </feature>
+    <feature name="musclebuild">
+      <category>3</category>
+    </feature>
+    <feature name="necklength">
+      <category>2</category>
+    </feature>
+    <feature name="neckthickness">
+      <category>4</category>
+    </feature>
+    <feature name="proportions">
+      <category>2</category>
+    </feature>
+    <feature name="sex">
+      <category>2</category>
+    </feature>
+    <feature name="shouldershape">
+      <category>4</category>
+    </feature>
+    <feature name="skincolour">
+      <category>1</category>
+    </feature>
+    <feature name="weight">
+      <category>4</category>
+    </feature>
+  </features>
+</subject>

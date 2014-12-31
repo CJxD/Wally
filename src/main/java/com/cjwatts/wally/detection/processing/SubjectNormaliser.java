@@ -13,17 +13,29 @@ public class SubjectNormaliser extends SubjectProcessor<MBFImage> {
 	private float targetAspect;
 	
 	public SubjectNormaliser() {
-		this(defaultWidth, defaultHeight);
+		this(null);
 	}
 	
 	public SubjectNormaliser(int width, int height) {
+		this(width, height, null);
+	}
+	
+	public SubjectNormaliser(SubjectProcessor<MBFImage> preprocessor) {
+		super(preprocessor);
+		this.targetWidth = defaultWidth;
+		this.targetHeight = defaultHeight;
+		this.targetAspect = defaultWidth / defaultHeight;
+	}
+	
+	public SubjectNormaliser(int width, int height, SubjectProcessor<MBFImage> preprocessor) {
+		super(preprocessor);
 		this.targetWidth = width;
 		this.targetHeight = height;
 		this.targetAspect = width / height;
 	}
-	
+
 	@Override
-	public void processImage(final MBFImage image) {
+	protected void processSubject(final MBFImage image) {
 		
 		image.trim();
 		

@@ -1,15 +1,33 @@
 package com.cjwatts.wally.detection.processing;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.openimaj.data.dataset.ListBackedDataset;
 import org.openimaj.image.Image;
 import org.openimaj.image.processor.ImageProcessor;
 
 public abstract class SubjectProcessor<I extends Image<?, I>> implements ImageProcessor<I> {
 
+	private SubjectProcessor<I> preprocessor;
+	
+	public SubjectProcessor() {}
+	
+	/**
+	 * Perform the chained preprocessor before applying this processor
+	 * @param preprocessor
+	 */
+	public SubjectProcessor(SubjectProcessor<I> preprocessor) {
+		this.preprocessor = preprocessor;
+	}
+	
+	protected abstract void processSubject(final I image);
+	
 	@Override
-	public abstract void processImage(final I image);
+	public void processImage(final I image) {
+		if (preprocessor != null)
+			preprocessor.processImage(image);
+		processSubject(image);
+	}
 	
 	/**
 	 * Process the image without side-affecting the original
@@ -37,7 +55,7 @@ public abstract class SubjectProcessor<I extends Image<?, I>> implements ImagePr
 	 * @return
 	 */
 	public List<I> processAll(List<I> images) {
-		List<I> newImages = new ArrayList<>();
+		List<I> newImages = new ListBackedDataset<>();
 		for (I image : images) {
 			newImages.add(image.process(this));
 		}
