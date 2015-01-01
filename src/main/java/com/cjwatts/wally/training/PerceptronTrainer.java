@@ -35,4 +35,9 @@ public class PerceptronTrainer implements TrainingAlgorithm {
 		return w;
 	}
 
+	@Override
+	public double predict(Matrix X, Matrix w) {
+		return X.times(w).get(0, 0);
+	}
+
 }

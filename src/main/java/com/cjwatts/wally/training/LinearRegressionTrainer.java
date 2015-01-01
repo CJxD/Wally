@@ -21,4 +21,9 @@ public class LinearRegressionTrainer implements TrainingAlgorithm {
 		return findModel(X, y);
 	}
 
+	@Override
+	public double predict(Matrix X, Matrix w) {
+		return X.times(w).get(0, 0);
+	}
+	
 }

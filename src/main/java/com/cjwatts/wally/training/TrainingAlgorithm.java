@@ -31,4 +31,14 @@ public interface TrainingAlgorithm extends Serializable {
 	 */
 	public Matrix findModel(Matrix X, Matrix y, Matrix w);
 	
+	/**
+	 * Make a prediction from an observation
+	 * 
+	 * @param X A single row of inputs
+	 * @param w The model
+	 * 
+	 * @return The projected result
+	 */
+	public double predict(Matrix x, Matrix w);
+	
 }

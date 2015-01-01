@@ -2,304 +2,304 @@
 <heuristic>
     <weightings>
         <weighting component="0">
-            <weight>-0.023087314144384596</weight>
+            <weight>0.01634938372447735</weight>
         </weighting>
         <weighting component="1">
-            <weight>-0.0013842332339668814</weight>
+            <weight>-0.009675222539180281</weight>
         </weighting>
         <weighting component="2">
-            <weight>0.001141702580516866</weight>
+            <weight>0.08774962393548932</weight>
         </weighting>
         <weighting component="3">
-            <weight>0.05189059369611558</weight>
+            <weight>-0.26593161566219237</weight>
         </weighting>
         <weighting component="4">
-            <weight>-0.09662587631145127</weight>
+            <weight>-0.218615186436118</weight>
         </weighting>
         <weighting component="5">
-            <weight>-0.06734631010663063</weight>
+            <weight>-0.2695433079651065</weight>
         </weighting>
         <weighting component="6">
-            <weight>0.023492105102776828</weight>
+            <weight>0.025256742993076453</weight>
         </weighting>
         <weighting component="7">
-            <weight>0.0629178982641663</weight>
+            <weight>-0.11396051206245639</weight>
         </weighting>
         <weighting component="8">
-            <weight>0.06499666970021904</weight>
+            <weight>-0.09311987338004135</weight>
         </weighting>
         <weighting component="9">
-            <weight>-0.03890864495539057</weight>
+            <weight>0.8214306687756153</weight>
         </weighting>
         <weighting component="10">
-            <weight>-0.09334964646868892</weight>
+            <weight>0.15865565305173723</weight>
         </weighting>
         <weighting component="11">
-            <weight>-0.011194187731472778</weight>
+            <weight>-1.2294276409522826</weight>
         </weighting>
         <weighting component="12">
-            <weight>-0.14238090728909483</weight>
+            <weight>-0.17894792137347437</weight>
         </weighting>
         <weighting component="13">
-            <weight>0.2232032281588899</weight>
+            <weight>2.1126643203488857</weight>
         </weighting>
         <weighting component="14">
-            <weight>-0.05547132301593225</weight>
+            <weight>-1.88379022860089</weight>
         </weighting>
         <weighting component="15">
-            <weight>0.08797929322939291</weight>
+            <weight>0.7787786610023579</weight>
         </weighting>
         <weighting component="16">
-            <weight>0.20990102745387942</weight>
+            <weight>0.8686004540774308</weight>
         </weighting>
         <weighting component="17">
-            <weight>0.07313190294277581</weight>
+            <weight>0.181954699947727</weight>
         </weighting>
         <weighting component="18">
-            <weight>-0.1276904656489779</weight>
+            <weight>-0.018196236785803677</weight>
         </weighting>
         <weighting component="19">
-            <weight>-0.0684688814871138</weight>
+            <weight>0.46863609694109565</weight>
         </weighting>
         <weighting component="20">
-            <weight>-0.056498647582149945</weight>
+            <weight>-0.8988099911016476</weight>
         </weighting>
         <weighting component="21">
-            <weight>-0.09910406953482571</weight>
+            <weight>0.7560257730753707</weight>
         </weighting>
         <weighting component="22">
-            <weight>-0.10794819901461433</weight>
+            <weight>-0.48699953904977955</weight>
         </weighting>
         <weighting component="23">
-            <weight>0.38206857099851693</weight>
+            <weight>1.532620583904086</weight>
         </weighting>
         <weighting component="24">
-            <weight>0.024651952826355357</weight>
+            <weight>-0.14171593709831712</weight>
         </weighting>
         <weighting component="25">
-            <weight>-0.11920091474628168</weight>
+            <weight>-1.3347404130354301</weight>
         </weighting>
         <weighting component="26">
-            <weight>-0.01656914966750877</weight>
+            <weight>-0.5484067139076115</weight>
         </weighting>
         <weighting component="27">
-            <weight>-0.12059211615126612</weight>
+            <weight>1.507032465195915</weight>
         </weighting>
         <weighting component="28">
-            <weight>-0.020591831519837678</weight>
+            <weight>1.0886810213536233</weight>
         </weighting>
         <weighting component="29">
-            <weight>0.1652015060713141</weight>
+            <weight>-0.3652876928575489</weight>
         </weighting>
         <weighting component="30">
-            <weight>0.17816462051520215</weight>
+            <weight>0.7974349685847446</weight>
         </weighting>
         <weighting component="31">
-            <weight>-0.043676632553341116</weight>
+            <weight>0.10241365236835315</weight>
         </weighting>
         <weighting component="32">
-            <weight>0.13259066028122932</weight>
+            <weight>0.20988326505992372</weight>
         </weighting>
         <weighting component="33">
-            <weight>-0.16515957455274533</weight>
+            <weight>-1.314897744390934</weight>
         </weighting>
         <weighting component="34">
-            <weight>0.038995579133845146</weight>
+            <weight>-2.2237721903788916</weight>
         </weighting>
         <weighting component="35">
-            <weight>0.44164082611836253</weight>
+            <weight>0.09529067488102028</weight>
         </weighting>
         <weighting component="36">
-            <weight>0.22150224269002194</weight>
+            <weight>2.503910267349508</weight>
         </weighting>
         <weighting component="37">
-            <weight>0.24918746554981802</weight>
+            <weight>3.2587972864571206</weight>
         </weighting>
         <weighting component="38">
-            <weight>-0.07452283753299374</weight>
+            <weight>-3.2534476554202647</weight>
         </weighting>
         <weighting component="39">
-            <weight>0.1196560589619769</weight>
+            <weight>2.6547430363859013</weight>
         </weighting>
         <weighting component="40">
-            <weight>-0.028612022193201386</weight>
+            <weight>0.40351286314295215</weight>
         </weighting>
         <weighting component="41">
-            <weight>0.12661662498272083</weight>
+            <weight>0.6626014175991171</weight>
         </weighting>
         <weighting component="42">
-            <weight>0.21522345514274485</weight>
+            <weight>1.989383378262196</weight>
         </weighting>
         <weighting component="43">
-            <weight>-0.1283213054741804</weight>
+            <weight>-1.8162692348634781</weight>
         </weighting>
         <weighting component="44">
-            <weight>-0.12540983480124943</weight>
+            <weight>-2.4478073476786646</weight>
         </weighting>
         <weighting component="45">
-            <weight>-0.05302263524898413</weight>
+            <weight>2.6112794441023315</weight>
         </weighting>
         <weighting component="46">
-            <weight>0.027879002331662933</weight>
+            <weight>1.3871855106850757</weight>
         </weighting>
         <weighting component="47">
-            <weight>-0.18297828617487727</weight>
+            <weight>-2.838353715251169</weight>
         </weighting>
         <weighting component="48">
-            <weight>0.10117206244855256</weight>
+            <weight>0.33623265117663403</weight>
         </weighting>
         <weighting component="49">
-            <weight>0.37148155992234805</weight>
+            <weight>-3.1219718259896947</weight>
         </weighting>
         <weighting component="50">
-            <weight>0.08562423967621065</weight>
+            <weight>2.4288749160649017</weight>
         </weighting>
         <weighting component="51">
-            <weight>-0.3214717891345296</weight>
+            <weight>-1.911338287997987</weight>
         </weighting>
         <weighting component="52">
-            <weight>-0.07928080348261735</weight>
+            <weight>0.31396571231565684</weight>
         </weighting>
         <weighting component="53">
-            <weight>-0.20891217718594463</weight>
+            <weight>-2.480971401271675</weight>
         </weighting>
         <weighting component="54">
-            <weight>-0.015363702782992336</weight>
+            <weight>2.0835945413770425</weight>
         </weighting>
         <weighting component="55">
-            <weight>-0.00961494101783084</weight>
+            <weight>0.09647437044881602</weight>
         </weighting>
         <weighting component="56">
-            <weight>0.14355725451595344</weight>
+            <weight>-1.6335784032972407</weight>
         </weighting>
         <weighting component="57">
-            <weight>-0.2910882621370575</weight>
+            <weight>0.7674016155590856</weight>
         </weighting>
         <weighting component="58">
-            <weight>-0.024633594440640172</weight>
+            <weight>-1.0222306661460971</weight>
         </weighting>
         <weighting component="59">
-            <weight>0.036191561972672974</weight>
+            <weight>0.3675402221938785</weight>
         </weighting>
         <weighting component="60">
-            <weight>-0.04423025350412433</weight>
+            <weight>1.3544913360148492</weight>
         </weighting>
         <weighting component="61">
-            <weight>0.00947344968407604</weight>
+            <weight>-0.11045744043866845</weight>
         </weighting>
         <weighting component="62">
-            <weight>0.21529900906294228</weight>
+            <weight>0.2942314491907949</weight>
         </weighting>
         <weighting component="63">
-            <weight>-0.3134678866903023</weight>
+            <weight>-0.5910017837020878</weight>
         </weighting>
         <weighting component="64">
-            <weight>-0.22820858658147505</weight>
+            <weight>0.13563203606697571</weight>
         </weighting>
         <weighting component="65">
-            <weight>0.16881682902023604</weight>
+            <weight>1.8174355914941032</weight>
         </weighting>
         <weighting component="66">
-            <weight>-0.05290089784129868</weight>
+            <weight>2.9144089423099095</weight>
         </weighting>
         <weighting component="67">
-            <weight>0.10759907966326247</weight>
+            <weight>-1.9256565771411371</weight>
         </weighting>
         <weighting component="68">
-            <weight>0.3802964573291731</weight>
+            <weight>1.2793176790297676</weight>
         </weighting>
         <weighting component="69">
-            <weight>0.04883636120135018</weight>
+            <weight>-2.8122962257496464</weight>
         </weighting>
         <weighting component="70">
-            <weight>-0.14453012204689067</weight>
+            <weight>0.5162424022855331</weight>
         </weighting>
         <weighting component="71">
-            <weight>0.07400347343102702</weight>
+            <weight>0.951319990791442</weight>
         </weighting>
         <weighting component="72">
-            <weight>-0.19797701686029587</weight>
+            <weight>0.5496411028286443</weight>
         </weighting>
         <weighting component="73">
-            <weight>-0.10893603178094725</weight>
+            <weight>1.2343909682680108</weight>
         </weighting>
         <weighting component="74">
-            <weight>-0.014382840818995506</weight>
+            <weight>-0.8123483329591268</weight>
         </weighting>
         <weighting component="75">
-            <weight>0.23858013479983822</weight>
+            <weight>-0.48604543052201965</weight>
         </weighting>
         <weighting component="76">
-            <weight>-0.1364791612431009</weight>
+            <weight>0.9417637079519159</weight>
         </weighting>
         <weighting component="77">
-            <weight>0.5240497618301123</weight>
+            <weight>-0.9129679253714456</weight>
         </weighting>
         <weighting component="78">
-            <weight>-0.24841693686359426</weight>
+            <weight>-2.627491780229545</weight>
         </weighting>
         <weighting component="79">
-            <weight>-0.09888902850398763</weight>
+            <weight>-0.7954154756014455</weight>
         </weighting>
         <weighting component="80">
-            <weight>-0.061896758814132403</weight>
+            <weight>-1.473007856122683</weight>
         </weighting>
         <weighting component="81">
-            <weight>-0.1607337193892161</weight>
+            <weight>-0.5108001480343161</weight>
         </weighting>
         <weighting component="82">
-            <weight>0.1370161893736614</weight>
+            <weight>0.7208570356531171</weight>
         </weighting>
         <weighting component="83">
-            <weight>0.15705217703678492</weight>
+            <weight>2.159218246705077</weight>
         </weighting>
         <weighting component="84">
-            <weight>-0.10216773237349877</weight>
+            <weight>1.1669351652420965</weight>
         </weighting>
         <weighting component="85">
-            <weight>-0.01205088186964583</weight>
+            <weight>1.0550918424318163</weight>
         </weighting>
         <weighting component="86">
-            <weight>0.16508650445704176</weight>
+            <weight>2.135615927535622</weight>
         </weighting>
         <weighting component="87">
-            <weight>-0.17434065239166277</weight>
+            <weight>-1.7932476419141465</weight>
         </weighting>
         <weighting component="88">
-            <weight>0.032011110822588236</weight>
+            <weight>-1.588431460601777</weight>
         </weighting>
         <weighting component="89">
-            <weight>0.31973725986936724</weight>
+            <weight>-0.7794463879669129</weight>
         </weighting>
         <weighting component="90">
-            <weight>0.015173594956514175</weight>
+            <weight>0.6321526235991244</weight>
         </weighting>
         <weighting component="91">
-            <weight>0.14113044021604426</weight>
+            <weight>1.0576928864418427</weight>
         </weighting>
         <weighting component="92">
-            <weight>0.3375614662262777</weight>
+            <weight>-1.0790485103108995</weight>
         </weighting>
         <weighting component="93">
-            <weight>-0.09890557539261878</weight>
+            <weight>-1.409301642263641</weight>
         </weighting>
         <weighting component="94">
-            <weight>0.2700976335725313</weight>
+            <weight>2.5512375325718484</weight>
         </weighting>
         <weighting component="95">
-            <weight>0.1402965343635971</weight>
+            <weight>0.12710740588608793</weight>
         </weighting>
         <weighting component="96">
-            <weight>0.013140375518325252</weight>
+            <weight>2.6963005673562126</weight>
         </weighting>
         <weighting component="97">
-            <weight>-0.18352912181618708</weight>
+            <weight>-1.5230303356941128</weight>
         </weighting>
         <weighting component="98">
-            <weight>-0.34852598966022863</weight>
+            <weight>-2.9997330908772115</weight>
         </weighting>
         <weighting component="99">
-            <weight>-0.45634224490365466</weight>
+            <weight>-0.6506765032370097</weight>
         </weighting>
     </weightings>
 </heuristic>

@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import Jama.Matrix;
+
+import org.apache.commons.lang.ArrayUtils;
 import org.openimaj.feature.DoubleFV;
 
 import com.cjwatts.wally.analysis.Category;
@@ -33,20 +35,24 @@ public abstract class Heuristic implements Trainable, Serializable {
 			loaded = true;
 		}
 		
-		this.setAlgorithm(algorithm);
+		this.algorithm = algorithm;
 	}
 	
-	public synchronized Category estimate(DoubleFV measurements) {
+	public Category estimate(DoubleFV measurements) {
 		if (weightings.size() == 0) throw new IllegalStateException("Heuristic has not been trained.");
 
-		float accumulator = 0.0f;
-		
-		for (int i = 0; i < measurements.length(); i++) {
-			accumulator += getWeighting(i) * measurements.get(i);
+		// Project the measurements onto the model
+		Matrix observation = new Matrix(measurements.values, 1);
+		Double[] weights;
+		synchronized(this) {
+			weights = weightings.values().toArray(new Double[0]);
 		}
+		Matrix model = new Matrix(ArrayUtils.toPrimitive(weights), 1).transpose();
+		
+		double result = algorithm.predict(observation, model);
 		
 		// Convert to integer and check range
-		int category = Math.round(accumulator);
+		int category = (int) Math.round(result);
 		category = Math.min(category, Category.values().length - 1);
 		category = Math.max(category, 0);
 		
@@ -55,7 +61,7 @@ public abstract class Heuristic implements Trainable, Serializable {
 	
 	@Override
 	public void train(TrainingData data) {
-//algorithm = new LinearRegressionTrainer();
+		this.algorithm = new RadialBasisFunctionTrainer(RBFFactory.createGaussianRBF(5));
 		// Organise X matrix and y vector
 		double[][] trainingVectors = new double[data.size()][weightings.size()];
 		double[][] target = new double[data.size()][1];
