@@ -9,7 +9,7 @@ import org.openimaj.image.MBFImage;
 
 import com.cjwatts.wally.detection.processing.SubjectProcessor;
 
-public class HorprasertBackgroundRemover extends SubjectProcessor<MBFImage> {
+public class HorprasertBackgroundRemover extends BackgroundRemover<MBFImage> {
 	
 	protected class BackgroundModel {
 		float[][] r;
@@ -26,6 +26,7 @@ public class HorprasertBackgroundRemover extends SubjectProcessor<MBFImage> {
 		private float[][] balpha;
 		
 		public BackgroundModel(MBFImage background) {
+			DisplayUtilities.display(background);
 			r = background.getBand(0).pixels;
 			g = background.getBand(1).pixels;
 			b = background.getBand(2).pixels;
@@ -122,6 +123,8 @@ public class HorprasertBackgroundRemover extends SubjectProcessor<MBFImage> {
 		// Cache BD and CD values
 		createCache(image);
 		
+		DisplayUtilities.display(image);
+		
 		FImage mask = new FImage(image.getWidth(), image.getHeight());
 
 		for (int i = 0; i < image.getHeight(); i++) {
@@ -150,14 +153,6 @@ public class HorprasertBackgroundRemover extends SubjectProcessor<MBFImage> {
 					mask.pixels[i][j] = Classification.HIGHLIGHT.getPixelValue();
 				}
 			}
-		}
-		
-		DisplayUtilities.display(mask);
-		try {
-			ImageUtilities.write(mask, new java.io.File("../mask.jpg"));
-		} catch (IOException ex) {
-			// TODO Auto-generated catch block
-			ex.printStackTrace();
 		}
 
 		image.multiplyInplace(mask);

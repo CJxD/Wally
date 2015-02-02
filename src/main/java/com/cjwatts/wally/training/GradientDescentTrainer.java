@@ -2,9 +2,21 @@ package com.cjwatts.wally.training;
 
 import Jama.Matrix;
 
-public class LinearRegressionTrainer implements TrainingAlgorithm {
+public class GradientDescentTrainer implements TrainingAlgorithm {
 	private static final long serialVersionUID = 1L;
 
+	protected double eta;
+	protected long iterations;
+	
+	/**
+	 * @param eta Learning rate
+	 * @param iterations Number of iterations to perform
+	 */
+	public GradientDescentTrainer(double eta, long iterations) {
+		this.eta = eta;
+		this.iterations = iterations;
+	}
+	
 	/**
 	 * @param X The data matrix
 	 * @return X with an extra 1 at the beginning of each row
@@ -26,26 +38,22 @@ public class LinearRegressionTrainer implements TrainingAlgorithm {
 	
 	@Override
 	public Matrix findModel(Matrix X, Matrix y) {
-		// Add bias term
-		X = addBias(X);
-		
-		// w = (X'X + aI)^-1 * X'y
-		Matrix Xt = X.transpose();
-		Matrix reg = Matrix.identity(
-				X.getColumnDimension(),
-				X.getColumnDimension())
-				.times(0.0005);
-		
-		return Xt.times(X)
-				.plus(reg)
-				.inverse()
-				.times(Xt)
-				.times(y);
+		return findModel(X, y, Matrix.random(X.getColumnDimension() + 1, 1));
 	}
-
+	
 	@Override
 	public Matrix findModel(Matrix X, Matrix y, Matrix w) {
-		return findModel(X, y);
+		X = addBias(X);
+		
+		Matrix gradient;
+		for (long i = 0; i < iterations; i++) {
+			// Gradient descent 2Xt(Xw - y)
+			gradient = X.transpose().times(2).times(X.times(w).minus(y));
+			Matrix temp = gradient.times(eta);
+			w = w.minus(temp);
+		}
+		
+		return w;
 	}
 
 	@Override
@@ -53,5 +61,5 @@ public class LinearRegressionTrainer implements TrainingAlgorithm {
 		X = addBias(X);
 		return X.times(w).get(0, 0);
 	}
-	
+
 }

@@ -27,7 +27,7 @@ public abstract class Heuristic implements Trainable, Serializable {
 	private boolean loaded = false;
 	
 	public Heuristic() {
-		this(new PerceptronTrainer(0.00001, 1000));
+		this(new GradientDescentTrainer(0.00001, 1000));
 	}
 	
 	public Heuristic(TrainingAlgorithm algorithm) {
@@ -39,6 +39,7 @@ public abstract class Heuristic implements Trainable, Serializable {
 	}
 	
 	public Category estimate(DoubleFV measurements) {
+		h.load();
 		if (weightings.size() == 0) throw new IllegalStateException("Heuristic has not been trained.");
 
 		// Project the measurements onto the model
@@ -61,9 +62,10 @@ public abstract class Heuristic implements Trainable, Serializable {
 	
 	@Override
 	public void train(TrainingData data) {
-		this.algorithm = new RadialBasisFunctionTrainer(RBFFactory.createGaussianRBF(5));
+		this.algorithm = RadialBasisFunctionTrainer.createGaussianRBF(5);
+		//this.algorithm = new LinearRegressionTrainer();
 		// Organise X matrix and y vector
-		double[][] trainingVectors = new double[data.size()][weightings.size()];
+		double[][] trainingVectors = new double[data.size()][0];
 		double[][] target = new double[data.size()][1];
 		int i = 0;
 		for (TrainingPair p : data) {
@@ -160,7 +162,7 @@ public abstract class Heuristic implements Trainable, Serializable {
 			ClassNotFoundException {
 		h = new HeuristicPersistenceHandler(this);
 		weightings = new HashMap<>();
-		algorithm = new PerceptronTrainer(0.00001, 1000);
+		algorithm = new GradientDescentTrainer(0.00001, 1000);
 		load();
 	}
 	

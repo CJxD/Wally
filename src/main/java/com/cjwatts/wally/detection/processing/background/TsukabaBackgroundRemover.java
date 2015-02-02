@@ -30,7 +30,7 @@ import com.cjwatts.wally.detection.processing.SubjectProcessor;
 		year = "2007",
 		booktitle = "10th Meeting on Image Recognition and Understand, MIRU"
 )
-public class TsukabaBackgroundRemover extends SubjectProcessor<MBFImage> {
+public class TsukabaBackgroundRemover extends BackgroundRemover<MBFImage> {
 
 	public static float[] lumThresholds = {0.06f, 0.1f, 0.15f};
 	public static float hueThreshold = 0.5f;

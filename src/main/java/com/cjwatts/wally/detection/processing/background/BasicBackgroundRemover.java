@@ -5,7 +5,7 @@ import org.openimaj.image.processing.background.BasicBackgroundSubtract;
 
 import com.cjwatts.wally.detection.processing.SubjectProcessor;
 
-public class BasicBackgroundRemover<I extends Image<?, I>> extends SubjectProcessor<I> {
+public class BasicBackgroundRemover<I extends Image<?, I>> extends BackgroundRemover<I> {
 
 	private BasicBackgroundSubtract<I> b;
 	

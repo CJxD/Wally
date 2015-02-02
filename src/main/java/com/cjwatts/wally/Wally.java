@@ -28,7 +28,7 @@ import com.cjwatts.wally.analysis.PrincipleComponentExtractor;
 import com.cjwatts.wally.analysis.Subject;
 import com.cjwatts.wally.detection.extraction.FullFrontBodyExtractor;
 import com.cjwatts.wally.detection.processing.InputLimiter;
-import com.cjwatts.wally.detection.processing.SubjectNormaliser;
+import com.cjwatts.wally.detection.processing.SubjectResizer;
 import com.cjwatts.wally.detection.processing.SubjectProcessor;
 import com.cjwatts.wally.detection.processing.SubjectTrimmer;
 import com.cjwatts.wally.detection.processing.background.BasicBackgroundRemover;
@@ -61,7 +61,7 @@ public class Wally {
 		 */
 		System.out.println("Preparing preprocessors...");
 		
-		final SubjectProcessor<MBFImage> processor = new SubjectNormaliser();
+		final SubjectProcessor<MBFImage> processor = new SubjectResizer();
 		//new SubjectNormaliser(new SubjectTrimmer(new TsukabaBackgroundRemover(background, new InputLimiter())));
 		
 		/*
