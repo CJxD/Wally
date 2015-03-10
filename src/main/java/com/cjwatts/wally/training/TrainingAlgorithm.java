@@ -4,8 +4,13 @@ import java.io.Serializable;
 
 import Jama.Matrix;
 
-public interface TrainingAlgorithm extends Serializable {
+public interface TrainingAlgorithm extends Serializable, Cloneable {
 
+	/**
+	 * @return An algorithm with the same settings as the current
+	 */
+	public TrainingAlgorithm clone();
+	
 	/**
 	 * Perform regression to generate a model of
 	 * weights for each variable.

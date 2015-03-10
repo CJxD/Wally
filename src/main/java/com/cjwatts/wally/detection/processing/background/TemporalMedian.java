@@ -18,18 +18,6 @@ public class TemporalMedian extends BackgroundDetector<MBFImage> {
 		long count = video.countFrames();
 		int frames;
 		
-		if (count == -1) {
-			// If the frame count failed, manually count the frames
-			video.reset();
-			count = 0;
-			while (video.hasNextFrame()) {
-				video.getNextFrame();
-				count++;
-			}
-			// Jump back to the beginning
-			video.reset();
-		}
-		
 		if (count < 2) {
 			throw new IllegalArgumentException("Video must have at least 2 frames.");
 		} else if (count / video.getFPS() > maxLength

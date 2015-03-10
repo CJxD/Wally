@@ -2,21 +2,24 @@ package com.cjwatts.wally.analysis;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
+import java.util.TreeMap;
 
 import org.openimaj.feature.DoubleFV;
 import org.openimaj.util.function.Operation;
 import org.openimaj.util.parallel.Parallel;
 
 import com.cjwatts.wally.analysis.feature.*;
-import com.cjwatts.wally.persistence.SubjectPersistenceHandler;
+import com.cjwatts.wally.persistence.PersistenceHandler;
+import com.cjwatts.wally.training.TrainingAlgorithm;
 import com.cjwatts.wally.training.TrainingData;
 import com.cjwatts.wally.training.TrainingPair;
 import com.cjwatts.wally.training.TrainingSet;
 
-public class Subject {
+public class Subject implements Iterable<Entry<Feature, Category>> {
 	
 	/*
 	 * For subjects without an ID, generate one in this range
@@ -24,14 +27,14 @@ public class Subject {
 	private static final int defaultIDStart = Integer.MAX_VALUE / 2;
 	private static final int defaultIDEnd = Integer.MAX_VALUE;
 	
-	protected final SubjectPersistenceHandler h;
+	protected final PersistenceHandler<Subject> h;
 	protected String id;
-	protected HashMap<Feature, Category> features = new HashMap<>();
+	protected Map<Feature, Category> features = new TreeMap<>();
 	
 	private boolean loaded = false;
 	
-	public static Subject fromData(final DoubleFV components) {
-		Subject s = new Subject();
+	public static Subject fromData(final DoubleFV components, PersistenceHandler<Subject> ph) {
+		Subject s = new Subject(ph);
 		
 		Age a = Age.getInstance();
 		s.features.put(a, a.analyse(components));
@@ -81,6 +84,9 @@ public class Subject {
 		NeckThickness nt = NeckThickness.getInstance();
 		s.features.put(nt, nt.analyse(components));
 		
+		Sex sx = Sex.getInstance();
+		s.features.put(sx, sx.analyse(components));
+		
 		ShoulderShape ss = ShoulderShape.getInstance();
 		s.features.put(ss, ss.analyse(components));
 		
@@ -93,78 +99,74 @@ public class Subject {
 		return s;
 	}
 	
-	public Subject() {
-		this("" + new Random().nextInt(defaultIDEnd - defaultIDStart) + defaultIDStart);
+	Subject(PersistenceHandler<Subject> ph) {
+		this("" + new Random().nextInt(defaultIDEnd - defaultIDStart) + defaultIDStart, ph);
 	}
 	
-	public Subject(String id) {
-		this("subjects/", id);
-	}
-	
-	public Subject(String savePath, String id) {
+	Subject(String id, PersistenceHandler<Subject> ph) {
 		this.id = id;
-		this.h = new SubjectPersistenceHandler(savePath, this);
+		this.h = ph;
 		
-		load();
+		// Defaults
+		Age a = Age.getInstance();
+		features.put(a, Category.MEDIUM);
 		
-		if (!loaded) {
-			Age a = Age.getInstance();
-			features.put(a, Category.MEDIUM);
-			
-			ArmLength al = ArmLength.getInstance();
-			features.put(al, Category.MEDIUM);
-			
-			ArmThickness at = ArmThickness.getInstance();
-			features.put(at, Category.MEDIUM);
-			
-			Chest cw = Chest.getInstance();
-			features.put(cw, Category.MEDIUM);
-			
-			FacialHairColour fhc = FacialHairColour.getInstance();
-			features.put(fhc, Category.MEDIUM);
-			
-			FacialHairLength fhl = FacialHairLength.getInstance();
-			features.put(fhl, Category.MEDIUM);
-			
-			Figure fs = Figure.getInstance();
-			features.put(fs, Category.MEDIUM);
-			
-			HairColour hc = HairColour.getInstance();
-			features.put(hc, Category.MEDIUM);
-			
-			HairLength hl = HairLength.getInstance();
-			features.put(hl, Category.MEDIUM);
-			
-			Height h = Height.getInstance();
-			features.put(h, Category.MEDIUM);
-			
-			Hips hw = Hips.getInstance();
-			features.put(hw, Category.MEDIUM);
-			
-			LegLength ll = LegLength.getInstance();
-			features.put(ll, Category.MEDIUM);
-			
-			LegThickness lt = LegThickness.getInstance();
-			features.put(lt, Category.MEDIUM);
-			
-			MuscleBuild mb = MuscleBuild.getInstance();
-			features.put(mb, Category.MEDIUM);
-			
-			NeckLength nl = NeckLength.getInstance();
-			features.put(nl, Category.MEDIUM);
-			
-			NeckThickness nt = NeckThickness.getInstance();
-			features.put(nt, Category.MEDIUM);
-			
-			ShoulderShape ss = ShoulderShape.getInstance();
-			features.put(ss, Category.MEDIUM);
-			
-			SkinColour sc = SkinColour.getInstance();
-			features.put(sc, Category.MEDIUM);
-			
-			Weight w = Weight.getInstance();
-			features.put(w, Category.MEDIUM);
-		}
+		ArmLength al = ArmLength.getInstance();
+		features.put(al, Category.MEDIUM);
+		
+		ArmThickness at = ArmThickness.getInstance();
+		features.put(at, Category.MEDIUM);
+		
+		Chest cw = Chest.getInstance();
+		features.put(cw, Category.MEDIUM);
+		
+		FacialHairColour fhc = FacialHairColour.getInstance();
+		features.put(fhc, Category.MEDIUM);
+		
+		FacialHairLength fhl = FacialHairLength.getInstance();
+		features.put(fhl, Category.MEDIUM);
+		
+		Figure fs = Figure.getInstance();
+		features.put(fs, Category.MEDIUM);
+		
+		HairColour hc = HairColour.getInstance();
+		features.put(hc, Category.MEDIUM);
+		
+		HairLength hl = HairLength.getInstance();
+		features.put(hl, Category.MEDIUM);
+		
+		Height h = Height.getInstance();
+		features.put(h, Category.MEDIUM);
+		
+		Hips hw = Hips.getInstance();
+		features.put(hw, Category.MEDIUM);
+		
+		LegLength ll = LegLength.getInstance();
+		features.put(ll, Category.MEDIUM);
+		
+		LegThickness lt = LegThickness.getInstance();
+		features.put(lt, Category.MEDIUM);
+		
+		MuscleBuild mb = MuscleBuild.getInstance();
+		features.put(mb, Category.MEDIUM);
+		
+		NeckLength nl = NeckLength.getInstance();
+		features.put(nl, Category.MEDIUM);
+		
+		NeckThickness nt = NeckThickness.getInstance();
+		features.put(nt, Category.MEDIUM);
+		
+		Sex sx = Sex.getInstance();
+		features.put(sx, Category.VERY_LOW);
+		
+		ShoulderShape ss = ShoulderShape.getInstance();
+		features.put(ss, Category.MEDIUM);
+		
+		SkinColour sc = SkinColour.getInstance();
+		features.put(sc, Category.MEDIUM);
+		
+		Weight w = Weight.getInstance();
+		features.put(w, Category.MEDIUM);
 	}
 	
 	/**
@@ -207,7 +209,7 @@ public class Subject {
 	 * Generate a training set from this subject and the given feature vector
 	 * @param components
 	 */
-	public TrainingSet getTrainingSet(final DoubleFV components) {
+	public TrainingSet createTrainingSet(final DoubleFV components) {
 		TrainingSet s = new TrainingSet();
 		
 		for (Entry<Feature, Category> e : features.entrySet()) {
@@ -316,6 +318,14 @@ public class Subject {
 		return loaded;
 	}
 
+	/**
+	 * An alphabetically ordered iterator of features => categories.
+	 */
+	@Override
+	public Iterator<Entry<Feature, Category>> iterator() {
+		return features.entrySet().iterator();
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

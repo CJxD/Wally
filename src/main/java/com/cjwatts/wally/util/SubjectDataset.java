@@ -20,6 +20,7 @@ import org.openimaj.io.InputStreamObjectReader;
 import org.openimaj.io.ObjectReader;
 
 import com.cjwatts.wally.analysis.Subject;
+import com.cjwatts.wally.analysis.SubjectFactory;
 
 /**
  * Implementation adapted from {@link VFSGroupDataset}
@@ -93,7 +94,7 @@ public class SubjectDataset<INSTANCE>
 				continue;
 			
 			// Create new subject from XML descriptor
-			Subject s = new Subject(folder.getName().getPath(), folder.getName().getBaseName());
+			Subject s = SubjectFactory.xmlBackedSubject(folder.getName().getPath(), folder.getName().getBaseName());
 			if (!s.isLoaded())
 				continue;
 			

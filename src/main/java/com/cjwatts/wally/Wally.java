@@ -6,51 +6,39 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.HashMap;
 import java.util.Map.Entry;
 
-import org.apache.commons.lang.mutable.MutableFloat;
-import org.apache.commons.lang.mutable.MutableInt;
+import org.apache.commons.vfs2.FileSystemException;
 import org.openimaj.data.dataset.GroupedDataset;
 import org.openimaj.data.dataset.ListBackedDataset;
 import org.openimaj.data.dataset.ListDataset;
 import org.openimaj.data.dataset.MapBackedDataset;
 import org.openimaj.data.dataset.VFSListDataset;
-import org.openimaj.experiment.dataset.sampling.GroupedUniformRandomisedSampler;
+import org.openimaj.experiment.evaluation.classification.ClassificationResult;
 import org.openimaj.feature.DoubleFV;
-import org.openimaj.image.DisplayUtilities;
 import org.openimaj.image.FImage;
 import org.openimaj.image.ImageUtilities;
 import org.openimaj.image.MBFImage;
-import org.openimaj.util.function.Operation;
-import org.openimaj.util.parallel.Parallel;
 
-import com.cjwatts.wally.analysis.PrincipleComponentExtractor;
-import com.cjwatts.wally.analysis.Subject;
-import com.cjwatts.wally.detection.extraction.FullFrontBodyExtractor;
-import com.cjwatts.wally.detection.processing.InputLimiter;
-import com.cjwatts.wally.detection.processing.SubjectResizer;
-import com.cjwatts.wally.detection.processing.SubjectProcessor;
-import com.cjwatts.wally.detection.processing.SubjectTrimmer;
-import com.cjwatts.wally.detection.processing.background.BasicBackgroundRemover;
-import com.cjwatts.wally.detection.processing.background.HorprasertBackgroundRemover;
-import com.cjwatts.wally.detection.processing.background.TsukabaBackgroundRemover;
-import com.cjwatts.wally.training.Heuristic;
-import com.cjwatts.wally.training.TrainingData;
-import com.cjwatts.wally.training.TrainingSet;
+import com.cjwatts.wally.analysis.*;
+import com.cjwatts.wally.analysis.feature.*;
+import com.cjwatts.wally.detection.processing.*;
+import com.cjwatts.wally.training.*;
 import com.cjwatts.wally.util.RandomSplitter;
 import com.cjwatts.wally.util.SubjectDataset;
+import com.cjwatts.wally.util.SubjectMatcher;
 
 public class Wally {
+
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
 
+		Wally context = new Wally();
+		
 		/*
 		 * Load images
 		 */
-		System.out.println("Loading images...");
-		File cwd = new File(".");
-		SubjectDataset<MBFImage> subjects = new SubjectDataset<>(
-				cwd.getAbsolutePath() + "/trainingdata/stills/aligned/grouped",
-				ImageUtilities.MBFIMAGE_READER);
+		SubjectDataset<MBFImage> subjects = context.load();
 
 		//MBFImage background = ImageUtilities.readMBF(new File(
 		//		"trainingdata/aligned/background.jpg"));
@@ -59,16 +47,13 @@ public class Wally {
 		/*
 		 * Scale, remove backgrounds and normalise
 		 */
-		System.out.println("Preparing preprocessors...");
-		
-		final SubjectProcessor<MBFImage> processor = new SubjectResizer();
-		//new SubjectNormaliser(new SubjectTrimmer(new TsukabaBackgroundRemover(background, new InputLimiter())));
+		context.prepareProcessor();
 		
 		/*
 		 * Create testing and training datasets
 		 */
 		System.out.println("Splitting subjects into training and testing sets...");
-		RandomSplitter<Subject, MBFImage> splitter = new RandomSplitter<>(subjects, subjects.size() / 2, 0, subjects.size() / 2);
+		RandomSplitter<Subject, MBFImage> splitter = new RandomSplitter<>(subjects, subjects.size() - 20, 0, 20);
 		GroupedDataset<Subject, ListDataset<MBFImage>, MBFImage> training = splitter.getTrainingDataset();
 		GroupedDataset<Subject, ListDataset<MBFImage>, MBFImage> testing = splitter.getTestDataset();
 		
@@ -83,7 +68,51 @@ public class Wally {
 		/*
 		 * Train the principle component extractor
 		 */
-		/**System.out.println("Processing training images...");
+		//context.analyse(subjects);
+		//context.savePCE("temp/pce.dat");
+		context.loadPCE("temp/pce.dat");
+		
+		/*
+		 * Train heuristics
+		 */
+		//context.createTrainingSet(training);
+		//context.saveTrainingSet("temp/cache.dat");
+        context.loadTrainingSet("temp/cache.dat");
+		
+		/*
+		 * Run training
+		 */
+        context.train();
+
+		/*
+		 * Test results
+		 */
+		context.test(testing);
+	}
+	
+	
+	public PrincipalComponentExtractor pce;
+	public SubjectProcessor<MBFImage> processor;
+	public TrainingSet trainingSet;
+	public TrainingAlgorithm algorithm = RadialBasisFunctionTrainer.createGaussianRBF(20);
+	
+	public SubjectDataset<MBFImage> load() throws FileSystemException {
+		System.out.println("Loading images...");
+		File cwd = new File(".");
+		return new SubjectDataset<>(
+				cwd.getAbsolutePath() + "/trainingdata/stills/aligned/grouped",
+				ImageUtilities.MBFIMAGE_READER);
+	}
+	
+	public void prepareProcessor() {
+		System.out.println("Preparing preprocessors...");
+		
+		processor = new SubjectResizer();
+		//new SubjectNormaliser(new SubjectTrimmer(new TsukabaBackgroundRemover(background, new InputLimiter())));
+	}
+	
+	public void analyse(SubjectDataset<MBFImage> subjects) {
+		System.out.println("Processing training images...");
 
 		GroupedDataset<Subject, ListDataset<FImage>, FImage> flattened = new MapBackedDataset<>();
 		ListDataset<FImage> allTraining = new ListBackedDataset<>();
@@ -101,121 +130,132 @@ public class Wally {
 		}
 
 		System.out.println("Analysing principle components...");
-		final PrincipleComponentExtractor pce = new PrincipleComponentExtractor(100);
+		pce = new PrincipalComponentExtractor(100);
 		pce.train(allTraining);
+	}
+	
+	public DoubleFV extract(MBFImage subject) {
+		return extract(subject.flatten());
+	}
+	
+	public DoubleFV extract(FImage subject) {
+		return pce.extractFeature(subject);
+	}
+	
+	public void savePCE(String path) throws IOException {
+		saveData(pce, path);
+	}
+	
+	public void loadPCE(String path) throws IOException, ClassNotFoundException {
+		System.out.println("Loading PCA data...");
+		pce = (PrincipalComponentExtractor) loadData(path);
+	}
+	
+	public void createTrainingSet(GroupedDataset<Subject, ListDataset<MBFImage>, MBFImage> training) {
+		System.out.println("Creating training set...");
+		trainingSet = new TrainingSet();
 		
-		/*
-		 * Save for later
-		 */
-		/*FileOutputStream pceFile = new FileOutputStream("temp/pce.dat");
-		ObjectOutputStream pceOut = new ObjectOutputStream(pceFile);
-		pceOut.writeObject(pce);
-		pceOut.close();
-		pceFile.close();*/
-		
-		FileInputStream pceFile = new FileInputStream("temp/pce.dat");
-        ObjectInputStream pceIn = new ObjectInputStream(pceFile);
-        final PrincipleComponentExtractor pce = (PrincipleComponentExtractor) pceIn.readObject();
-        pceIn.close();
-        pceFile.close();
-		
-		/*
-		 * Train heuristics
-		 */
-		System.out.println("Analysing principle components...");
-		/*Parallel.forEach(training.entrySet(), new Operation<Entry<Subject, ListDataset<MBFImage>>>(){
-
-			@Override
-			public void perform(Entry<Subject, ListDataset<MBFImage>> e) {
-				Subject s = e.getKey();
-				
-				// Run training for each image of the subject
-				for (MBFImage image : e.getValue()) {
-					DoubleFV components = pce.extractFeature(image.process(processor).flatten());
-					s.trainFeatures(components);
-				}
-			}
-			
-		});*//**
-		
-		TrainingSet set = new TrainingSet();
-			
 		for (Entry<Subject, ListDataset<MBFImage>> e : training.entrySet()) {
 			Subject s = e.getKey();
 			
 			// Add training data for each image of the subject
 			for (MBFImage image : e.getValue()) {
 				DoubleFV components = pce.extractFeature(image.process(processor).flatten());
-				set.addAll(s.getTrainingSet(components));
+				trainingSet.addAll(s.createTrainingSet(components));
 			}
 		}
-		
-		/*
-		 * Save for later
-		 */
-		/*FileOutputStream setFile = new FileOutputStream("temp/cache.dat");
-		ObjectOutputStream setOut = new ObjectOutputStream(setFile);
-		setOut.writeObject(set);
-		setOut.close();
-		setFile.close();*/
-		
-        FileInputStream setFile = new FileInputStream("temp/cache.dat");
-        ObjectInputStream setIn = new ObjectInputStream(setFile);
-        TrainingSet set = (TrainingSet) setIn.readObject();
-        setIn.close();
-        setFile.close();
-		
-		// Run training
-        System.out.println("Adjusting feature weights...");
-		set.trainAll();
-		
-		/*
-		 * Test results
-		 */
+	}
+	
+	public void saveTrainingSet(String path) throws IOException {
+		saveData(trainingSet, path);
+	}
+	
+	public void loadTrainingSet(String path) throws IOException, ClassNotFoundException {
+		System.out.println("Loading training set...");
+        trainingSet = (TrainingSet) loadData(path);
+	}
+	
+	private void saveData(Object data, String path) throws IOException {
+		try (
+				FileOutputStream file = new FileOutputStream(path);
+				ObjectOutputStream out = new ObjectOutputStream(file);
+			) {
+			out.writeObject(data);
+		} catch (IOException ex) {
+			throw ex;
+		}
+	}
+	
+	private Object loadData(String path) throws IOException, ClassNotFoundException {
+		try (
+				FileInputStream file = new FileInputStream(path);
+				ObjectInputStream in = new ObjectInputStream(file);
+			) {
+			return in.readObject();
+		} catch (IOException | ClassNotFoundException ex) {
+			throw ex;
+		}
+	}
+	
+	public void train() {
+		System.out.println("Adjusting feature weights...");
+		trainingSet.trainAll(algorithm);
+	}
+	
+	/**
+	 * @return Average error as a percentage
+	 */
+	public float test(GroupedDataset<Subject, ListDataset<MBFImage>, MBFImage> testing) {
 		System.out.println("Testing recall...");
-		final MutableInt n = new MutableInt(0);
-		final MutableFloat error = new MutableFloat(0);
+		int n = 0;
+		float error = 0;
+		SubjectMatcher matcher = new SubjectMatcher("jdbc:derby:db");
+		int recallRate = 0;
 
-		/*Parallel.forEach(testing.entrySet(), new Operation<Entry<Subject, ListDataset<MBFImage>>>(){
-
-			@Override
-			public void perform(Entry<Subject, ListDataset<MBFImage>> e) {
-				Subject s = e.getKey();
-				
-				// Get the error distance for each calculated image
-				float err = 0f;
-				for (MBFImage image : e.getValue()) {
-					DoubleFV components = pce.extractFeature(image.process(processor).flatten());
-					err += s.distanceFrom(Subject.fromData(components));
-				}
-				
-				synchronized (error) {
-					error.add(err);
-				}
-				
-				synchronized (n) {
-					n.increment();
-				}
-			}
-			
-		});*/
+		// Specific accuracies
+		HashMap<Feature, Integer> accuracies = new HashMap<>();
+		for (Feature f : SubjectFactory.xmlBackedSubject().getFeatures().keySet()) {
+			accuracies.put(f, 0);
+		}
 		
 		for (Entry<Subject, ListDataset<MBFImage>> e : testing.entrySet()) {
 			Subject s = e.getKey();
 			
-			// Get the error distance for each calculated image
-			float err = 0f;
 			for (MBFImage image : e.getValue()) {
 				DoubleFV components = pce.extractFeature(image.process(processor).flatten());
-				err += s.distanceFrom(Subject.fromData(components));
+				Subject guess = SubjectFactory.databaseBackedSubjectFromData(components);
+				
+				// Get the error distance for each calculated image
+				error += s.distanceFrom(guess);
+				n++;
+				
+				// Recall the subject from the database, see if they are in top 5
+				for (Subject r : matcher.findSimilar(guess, 5).getPredictedClasses()) {
+					if (r.equals(s))
+						recallRate++;
+				}
+				
+				// Specific accuracies
+				for (Entry<Feature, Category> f : s.getFeatures().entrySet()) {
+					// If category is equal to guess's category, increment accuracy value
+					if (f.getValue().equals(
+							guess.getCategory(f.getKey())))
+						accuracies.put(f.getKey(), accuracies.get(f.getKey()) + 1);
+				}
 			}
-			
-			error.add(err);
-			
-			n.increment();
 		}
 		
-		System.out.printf("Average error: %f", error.toFloat() / n.toInteger());
+		System.out.println("\nAccuracy levels");
+		System.out.println("--------------------|---------");
+		for (Entry<Feature, Integer> e : accuracies.entrySet()) {
+			System.out.printf("%19s | %.2f%%\n", e.getKey().toString(), e.getValue() * 100f / n);
+		}
+		System.out.println("--------------------|---------\n");
 		
+		System.out.printf("Average error: %f\n", error / n);
+		
+		System.out.printf("Recall rate (within top 5): %.2f%%\n", recallRate * 100f / n);
+		
+		return error / n;
 	}
 }

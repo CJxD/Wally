@@ -13,8 +13,9 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.reflect.ClassPath;
 import com.google.common.reflect.ClassPath.ClassInfo;
 
-public abstract class Feature extends Heuristic implements Analysable {
-
+public abstract class Feature extends Heuristic implements Analysable, Comparable<Feature> {
+	private static final long serialVersionUID = 1L;
+	
 	private static ImmutableSet<ClassInfo> classes;
 	
 	/**
@@ -50,6 +51,11 @@ public abstract class Feature extends Heuristic implements Analysable {
 	@Override
 	public Category analyse(DoubleFV components) {
 		return estimate(components);
+	}
+
+	@Override
+	public int compareTo(Feature o) {
+		return this.toString().compareTo(o.toString());
 	}
 
 }

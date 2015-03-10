@@ -82,4 +82,17 @@ public class TrainingSet extends HashMap<Heuristic, TrainingData> implements Ser
 		}
 	}
 	
+	/**
+	 * Train all heuristics with the gathered training data
+	 * @param algorithm Algorithm to use for all features.
+	 * 					Side-effects all instances of each feature
+	 * 					Algorithm parameters are not affected (algorithm is cloned)
+	 */
+	public void trainAll(final TrainingAlgorithm algorithm) {
+		for (Map.Entry<Heuristic, TrainingData> e : entrySet()) {
+			e.getKey().setAlgorithm(algorithm.clone());
+			e.getKey().train(e.getValue());
+		}
+	}
+	
 }

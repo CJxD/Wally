@@ -1,13 +1,11 @@
 package com.cjwatts.wally.training;
 
-import java.util.Arrays;
-
 import org.openimaj.ml.clustering.kmeans.DoubleKMeans;
 
 import Jama.Matrix;
 
 public class RadialBasisFunctionTrainer implements TrainingAlgorithm {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 	
 	/**
 	 * Factory method to produce a gaussian-based RBF
@@ -28,6 +26,13 @@ public class RadialBasisFunctionTrainer implements TrainingAlgorithm {
 	protected final MappingFunction mapping;
 	protected double[][] centroids = null;
 	
+	@Override
+	public RadialBasisFunctionTrainer clone() {
+		RadialBasisFunctionTrainer t = new RadialBasisFunctionTrainer(mapping);
+		t.centroids = centroids;
+		return t;
+	}
+	
 	/**
 	 * @param mappingFunction The non-linear mapping function to use 
 	 */
@@ -35,11 +40,14 @@ public class RadialBasisFunctionTrainer implements TrainingAlgorithm {
 		this.mapping = mappingFunction;
 	}
 	
-	protected void kmeans(Matrix X) {
+	protected double[][] kmeans(Matrix X) {
 		int k = X.getColumnDimension();
+		if (k > X.getRowDimension())
+			throw new IllegalArgumentException("Not enough row samples to generate " + k + " bases.");
+		
 		DoubleKMeans kmeans = DoubleKMeans.createKDTreeEnsemble(k);
 		double[][] x = X.getArray();
-		centroids = kmeans.cluster(x).centroids;
+		return kmeans.cluster(x).centroids;
 	}
 	
 	protected Matrix transform(Matrix X) {
@@ -73,7 +81,7 @@ public class RadialBasisFunctionTrainer implements TrainingAlgorithm {
 	
 	@Override
 	public Matrix findModel(Matrix X, Matrix y) {
-		kmeans(X);
+		centroids = kmeans(X);
 		return new LinearRegressionTrainer().findModel(transform(X), y);
 	}
 	

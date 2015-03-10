@@ -17,6 +17,11 @@ public class GradientDescentTrainer implements TrainingAlgorithm {
 		this.iterations = iterations;
 	}
 	
+	@Override
+	public GradientDescentTrainer clone() {
+		return new GradientDescentTrainer(eta, iterations);
+	}
+	
 	/**
 	 * @param X The data matrix
 	 * @return X with an extra 1 at the beginning of each row

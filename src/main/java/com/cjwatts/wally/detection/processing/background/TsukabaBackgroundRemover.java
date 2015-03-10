@@ -89,6 +89,8 @@ public class TsukabaBackgroundRemover extends BackgroundRemover<MBFImage> {
 				|| image.getWidth() != model.getWidth())
 			throw new IllegalArgumentException("Image must have the same dimensions as the background");
 		
+		//DisplayUtilities.display(image, "Tsukaba Input");
+		
 		FImage mask = new FImage(image.getWidth(), image.getHeight());
 		
 		float[][] imageLum = image.getBand(2).pixels;
@@ -126,14 +128,6 @@ public class TsukabaBackgroundRemover extends BackgroundRemover<MBFImage> {
 			}
 		}
 		
-		DisplayUtilities.display(mask);
-		try {
-			ImageUtilities.write(mask, new java.io.File("../mask.jpg"));
-		} catch (IOException ex) {
-			// TODO Auto-generated catch block
-			ex.printStackTrace();
-		}
-		
 		/*
 		 * --Labelling--
 		 * Find all large connected components
@@ -155,6 +149,9 @@ public class TsukabaBackgroundRemover extends BackgroundRemover<MBFImage> {
 		//finalise(mask);
     	
 		image.multiplyInplace(mask);
+		
+		//DisplayUtilities.display(mask, "Tsukaba Mask");
+		//DisplayUtilities.display(image, "Tsukaba Output");
 	}
 	
 }

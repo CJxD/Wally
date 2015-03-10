@@ -27,20 +27,21 @@ public abstract class Heuristic implements Trainable, Serializable {
 	private boolean loaded = false;
 	
 	public Heuristic() {
-		this(new GradientDescentTrainer(0.00001, 1000));
-	}
-	
-	public Heuristic(TrainingAlgorithm algorithm) {
 		if (load()) {
 			loaded = true;
 		}
-		
+	}
+	
+	public Heuristic(TrainingAlgorithm algorithm) {
 		this.algorithm = algorithm;
 	}
 	
 	public Category estimate(DoubleFV measurements) {
-		h.load();
-		if (weightings.size() == 0) throw new IllegalStateException("Heuristic has not been trained.");
+		synchronized(this) {
+			if (!loaded) h.load();
+			if (algorithm == null) throw new IllegalStateException("No algorithm has been selected.");
+			if (weightings.size() == 0) throw new IllegalStateException("Heuristic has not been trained.");
+		}
 
 		// Project the measurements onto the model
 		Matrix observation = new Matrix(measurements.values, 1);
@@ -55,15 +56,17 @@ public abstract class Heuristic implements Trainable, Serializable {
 		// Convert to integer and check range
 		int category = (int) Math.round(result);
 		category = Math.min(category, Category.values().length - 1);
-		category = Math.max(category, 0);
+		category = Math.max(category, 1);
 		
 		return Category.values()[category];
 	}
 	
 	@Override
 	public void train(TrainingData data) {
-		this.algorithm = RadialBasisFunctionTrainer.createGaussianRBF(5);
-		//this.algorithm = new LinearRegressionTrainer();
+		synchronized(this) {
+			if (algorithm == null) throw new IllegalStateException("No algorithm has been selected.");
+		}
+		
 		// Organise X matrix and y vector
 		double[][] trainingVectors = new double[data.size()][0];
 		double[][] target = new double[data.size()][1];
@@ -81,11 +84,18 @@ public abstract class Heuristic implements Trainable, Serializable {
 		Matrix model;
 		if (weightings.size() > 0) {
 			// Organise weights vector
-			double[][] weights = new double[][] {Doubles.toArray(weightings.values())};
+			double[][] weights;
+			synchronized(weightings) {
+				weights = new double[][] {Doubles.toArray(weightings.values())};
+			}
 			Matrix w = new Matrix(weights).transpose();
-			model = algorithm.findModel(X, y, w);
+			synchronized(algorithm) {
+				model = algorithm.findModel(X, y, w);
+			}
 		} else {
-			model = algorithm.findModel(X, y);
+			synchronized(algorithm) {
+				model = algorithm.findModel(X, y);
+			}
 		}
 		
 		// Set weights
@@ -134,17 +144,16 @@ public abstract class Heuristic implements Trainable, Serializable {
 	 * Load instance from storage
 	 */
 	public synchronized boolean load() {
-		boolean result = h.load();
-		loaded = result;
-		return result;
+		return loaded = h.load();
 	}
 	
 	/**
 	 * Save this instance
 	 */
 	public synchronized void save() {
-		h.save();
-		loaded = true;
+		// If not loaded and save failed, loaded is still false
+		// If save successful, loaded is true
+		loaded = loaded | h.save();
 	}
 	
 	/**
@@ -154,15 +163,15 @@ public abstract class Heuristic implements Trainable, Serializable {
 		return loaded;
 	}
 	
-	private void writeObject(ObjectOutputStream oos) throws IOException {
+	private synchronized void writeObject(ObjectOutputStream oos) throws IOException {
 		save();
 	}
 
-	private void readObject(ObjectInputStream ois) throws IOException,
+	private synchronized void readObject(ObjectInputStream ois) throws IOException,
 			ClassNotFoundException {
 		h = new HeuristicPersistenceHandler(this);
 		weightings = new HashMap<>();
-		algorithm = new GradientDescentTrainer(0.00001, 1000);
+		algorithm = null;
 		load();
 	}
 	

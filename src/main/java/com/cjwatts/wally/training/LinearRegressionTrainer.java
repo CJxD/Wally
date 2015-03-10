@@ -5,6 +5,11 @@ import Jama.Matrix;
 public class LinearRegressionTrainer implements TrainingAlgorithm {
 	private static final long serialVersionUID = 1L;
 
+	@Override
+	public LinearRegressionTrainer clone() {
+		return new LinearRegressionTrainer();
+	}
+	
 	/**
 	 * @param X The data matrix
 	 * @return X with an extra 1 at the beginning of each row

@@ -123,7 +123,7 @@ public class HorprasertBackgroundRemover extends BackgroundRemover<MBFImage> {
 		// Cache BD and CD values
 		createCache(image);
 		
-		DisplayUtilities.display(image);
+		DisplayUtilities.display(image, "Horprasert Input");
 		
 		FImage mask = new FImage(image.getWidth(), image.getHeight());
 
@@ -156,6 +156,9 @@ public class HorprasertBackgroundRemover extends BackgroundRemover<MBFImage> {
 		}
 
 		image.multiplyInplace(mask);
+		
+		DisplayUtilities.display(mask, "Horprasert Mask");
+		DisplayUtilities.display(image, "Horprasert Output");
 		
 		clearCache();
 	}
