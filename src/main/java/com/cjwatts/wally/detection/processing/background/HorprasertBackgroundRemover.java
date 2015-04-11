@@ -1,10 +1,7 @@
 package com.cjwatts.wally.detection.processing.background;
 
-import java.io.IOException;
-
 import org.openimaj.image.DisplayUtilities;
 import org.openimaj.image.FImage;
-import org.openimaj.image.ImageUtilities;
 import org.openimaj.image.MBFImage;
 
 import com.cjwatts.wally.detection.processing.SubjectProcessor;

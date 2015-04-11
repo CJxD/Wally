@@ -1,8 +1,6 @@
 package com.cjwatts.wally.persistence;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -81,12 +79,12 @@ public abstract class XMLPersistenceHandler<I, S extends Storable<I>>
 			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 			
 			synchronized (file) {
-				Files.createDirectories(file.getParentFile().toPath());
+				file.getParentFile().mkdirs();
 				m.marshal(s, file);
 			}
 			
 			return true;
-		} catch (JAXBException | IOException ex) {
+		} catch (JAXBException ex) {
 			// TODO Auto-generated catch block
 			ex.printStackTrace();
 			return false;
@@ -99,10 +97,6 @@ public abstract class XMLPersistenceHandler<I, S extends Storable<I>>
 	 */
 	protected abstract S createStore();
 	
-	/**
-	 * Set the instance that will be saved from and loaded to
-	 * @param instance
-	 */
 	public void setInstance(I instance) {
 		this.instance = instance;
 		file = new File(dbPath + instance.toString() + ".xml");

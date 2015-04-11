@@ -1,20 +1,10 @@
 package com.cjwatts.wally.detection.processing.background;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 import org.openimaj.citation.annotation.Reference;
 import org.openimaj.citation.annotation.ReferenceType;
-import org.openimaj.image.DisplayUtilities;
 import org.openimaj.image.FImage;
-import org.openimaj.image.Image;
-import org.openimaj.image.ImageUtilities;
 import org.openimaj.image.MBFImage;
 import org.openimaj.image.colour.ColourSpace;
-import org.openimaj.image.connectedcomponent.GreyscaleConnectedComponentLabeler;
-import org.openimaj.image.pixel.ConnectedComponent;
 
 import com.cjwatts.wally.detection.processing.SubjectProcessor;
 

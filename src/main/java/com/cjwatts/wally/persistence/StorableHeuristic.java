@@ -46,10 +46,6 @@ public class StorableHeuristic implements Storable<Heuristic> {
 	
 	@Override
 	public void restoreTo(Heuristic h) {
-		for (StorableWeighting w : weightings.weighting) {
-			h.setWeighting(w.component, w.weight, false);
-		}
-		
 		if (algorithm != null) {
 			byte[] data = Base64.decode(algorithm.data.getBytes());
 			
@@ -66,6 +62,10 @@ public class StorableHeuristic implements Storable<Heuristic> {
 			}
 			
 			h.setAlgorithm((TrainingAlgorithm) o, false);
+		}
+		
+		for (StorableWeighting w : weightings.weighting) {
+			h.setWeighting(w.component, w.weight, false);
 		}
 	}
 }
