@@ -13,4 +13,10 @@ public interface PersistenceHandler<I> {
 	 * @return true if successful, false if save failed
 	 */
 	public boolean save();
+	
+	/**
+	 * Set the instance that will be saved from and loaded to
+	 * @param instance
+	 */
+	public void setInstance(I instance);
 }
