@@ -1,7 +1,5 @@
 package com.cjwatts.wally.analysis;
 
-import java.io.File;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -9,12 +7,32 @@ import java.util.Random;
 import java.util.TreeMap;
 
 import org.openimaj.feature.DoubleFV;
-import org.openimaj.util.function.Operation;
-import org.openimaj.util.parallel.Parallel;
 
-import com.cjwatts.wally.analysis.feature.*;
+import com.cjwatts.wally.analysis.feature.Age;
+import com.cjwatts.wally.analysis.feature.ArmLength;
+import com.cjwatts.wally.analysis.feature.ArmThickness;
+import com.cjwatts.wally.analysis.feature.Chest;
+import com.cjwatts.wally.analysis.feature.Ethnicity;
+import com.cjwatts.wally.analysis.feature.FacialHairColour;
+import com.cjwatts.wally.analysis.feature.FacialHairLength;
+import com.cjwatts.wally.analysis.feature.Feature;
+import com.cjwatts.wally.analysis.feature.Figure;
+import com.cjwatts.wally.analysis.feature.HairColour;
+import com.cjwatts.wally.analysis.feature.HairLength;
+import com.cjwatts.wally.analysis.feature.Height;
+import com.cjwatts.wally.analysis.feature.Hips;
+import com.cjwatts.wally.analysis.feature.LegLength;
+import com.cjwatts.wally.analysis.feature.LegShape;
+import com.cjwatts.wally.analysis.feature.LegThickness;
+import com.cjwatts.wally.analysis.feature.MuscleBuild;
+import com.cjwatts.wally.analysis.feature.NeckLength;
+import com.cjwatts.wally.analysis.feature.NeckThickness;
+import com.cjwatts.wally.analysis.feature.Proportions;
+import com.cjwatts.wally.analysis.feature.Sex;
+import com.cjwatts.wally.analysis.feature.ShoulderShape;
+import com.cjwatts.wally.analysis.feature.SkinColour;
+import com.cjwatts.wally.analysis.feature.Weight;
 import com.cjwatts.wally.persistence.PersistenceHandler;
-import com.cjwatts.wally.training.TrainingAlgorithm;
 import com.cjwatts.wally.training.TrainingData;
 import com.cjwatts.wally.training.TrainingPair;
 import com.cjwatts.wally.training.TrainingSet;
@@ -48,6 +66,9 @@ public class Subject implements Iterable<Entry<Feature, Category>> {
 		Chest cw = Chest.getInstance();
 		s.features.put(cw, cw.analyse(components));
 		
+		Ethnicity e = Ethnicity.getInstance();
+		s.features.put(e, cw.analyse(components));
+		
 		FacialHairColour fhc = FacialHairColour.getInstance();
 		s.features.put(fhc, fhc.analyse(components));
 		
@@ -72,6 +93,9 @@ public class Subject implements Iterable<Entry<Feature, Category>> {
 		LegLength ll = LegLength.getInstance();
 		s.features.put(ll, ll.analyse(components));
 		
+		LegShape ls = LegShape.getInstance();
+		s.features.put(ls, ls.analyse(components));
+		
 		LegThickness lt = LegThickness.getInstance();
 		s.features.put(lt, lt.analyse(components));
 		
@@ -83,6 +107,9 @@ public class Subject implements Iterable<Entry<Feature, Category>> {
 		
 		NeckThickness nt = NeckThickness.getInstance();
 		s.features.put(nt, nt.analyse(components));
+		
+		Proportions p = Proportions.getInstance();
+		s.features.put(p, p.analyse(components));
 		
 		Sex sx = Sex.getInstance();
 		s.features.put(sx, sx.analyse(components));
@@ -120,6 +147,9 @@ public class Subject implements Iterable<Entry<Feature, Category>> {
 		Chest cw = Chest.getInstance();
 		features.put(cw, Category.MEDIUM);
 		
+		Ethnicity e = Ethnicity.getInstance();
+		features.put(e, Category.MEDIUM);
+		
 		FacialHairColour fhc = FacialHairColour.getInstance();
 		features.put(fhc, Category.MEDIUM);
 		
@@ -144,6 +174,9 @@ public class Subject implements Iterable<Entry<Feature, Category>> {
 		LegLength ll = LegLength.getInstance();
 		features.put(ll, Category.MEDIUM);
 		
+		LegShape ls = LegShape.getInstance();
+		features.put(ls, Category.MEDIUM);
+		
 		LegThickness lt = LegThickness.getInstance();
 		features.put(lt, Category.MEDIUM);
 		
@@ -156,8 +189,11 @@ public class Subject implements Iterable<Entry<Feature, Category>> {
 		NeckThickness nt = NeckThickness.getInstance();
 		features.put(nt, Category.MEDIUM);
 		
+		Proportions p = Proportions.getInstance();
+		features.put(p, Category.VERY_LOW);
+		
 		Sex sx = Sex.getInstance();
-		features.put(sx, Category.VERY_LOW);
+		features.put(sx, Category.LOW);
 		
 		ShoulderShape ss = ShoulderShape.getInstance();
 		features.put(ss, Category.MEDIUM);
