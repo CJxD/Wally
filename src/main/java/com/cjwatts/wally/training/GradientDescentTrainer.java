@@ -48,7 +48,16 @@ public class GradientDescentTrainer implements TrainingAlgorithm {
 	
 	@Override
 	public Matrix findModel(Matrix X, Matrix y, Matrix w) {
+		if (w.getRowDimension() < X.getColumnDimension())
+			return findModel(X, y);
+		
 		X = addBias(X);
+		
+		if (w.getRowDimension() < X.getColumnDimension()) {
+			Matrix temp = Matrix.identity(X.getColumnDimension() + 1, 1);
+			temp.setMatrix(1, temp.getRowDimension() - 1, 0, 0, w);
+			w = temp;
+		}
 		
 		Matrix gradient;
 		for (long i = 0; i < iterations; i++) {

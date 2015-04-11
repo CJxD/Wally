@@ -4,6 +4,11 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A set of per-feature {@link TrainingData} instances for training a multitude of {@link Heuristic}s
+ * @author Chris
+ *
+ */
 public class TrainingSet extends HashMap<Heuristic, TrainingData> implements Serializable {
 	private static final long serialVersionUID = 1L;
 

@@ -43,7 +43,7 @@ public class RadialBasisFunctionTrainer implements TrainingAlgorithm {
 	protected double[][] kmeans(Matrix X) {
 		int k = X.getColumnDimension();
 		if (k > X.getRowDimension())
-			throw new IllegalArgumentException("Not enough row samples to generate " + k + " bases.");
+			throw new IllegalArgumentException("Not enough row samples (" + X.getRowDimension() + ") to generate " + k + " unique bases.");
 		
 		DoubleKMeans kmeans = DoubleKMeans.createKDTreeEnsemble(k);
 		double[][] x = X.getArray();

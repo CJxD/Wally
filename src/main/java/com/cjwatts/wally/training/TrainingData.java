@@ -8,16 +8,19 @@ import org.openimaj.feature.DoubleFV;
 
 import com.cjwatts.wally.analysis.Category;
 
+/**
+ * A set of {@link TrainingPair}s to train a particular {@link Heuristic} with multiple examples
+ */
 public class TrainingData extends HashMap<DoubleFV, Category> implements Iterable<TrainingPair>, Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
 	public void put(TrainingPair p) {
-		put(p.getMeasurements(), p.getCategory());
+		put(p.getObservations(), p.getCategory());
 	}
 	
 	public void remove(TrainingPair p) {
-		remove(p.getMeasurements());
+		remove(p.getObservations());
 	}
 
 	@Override
