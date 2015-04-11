@@ -8,6 +8,7 @@ import org.openimaj.feature.DoubleFV;
 
 import com.cjwatts.wally.analysis.Analysable;
 import com.cjwatts.wally.analysis.Category;
+import com.cjwatts.wally.analysis.FeatureCategory;
 import com.cjwatts.wally.training.Heuristic;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.reflect.ClassPath;
@@ -58,4 +59,6 @@ public abstract class Feature extends Heuristic implements Analysable, Comparabl
 		return this.toString().compareTo(o.toString());
 	}
 
+	public abstract FeatureCategory getFeatureCategory(int ordinal);
+	
 }
