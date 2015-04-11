@@ -1,4 +1,7 @@
+cache/
+heuristics*/
 temp/
+splits.txt
 
 #################
 ## Eclipse
